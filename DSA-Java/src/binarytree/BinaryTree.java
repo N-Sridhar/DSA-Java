@@ -99,6 +99,20 @@ public class BinaryTree {
 		}
 	}
 
+	int diameter(Node n) {
+		if (n == null) {
+			return 0;
+		} else {
+			int lh = height(n.left);
+			int rh = height(n.right);
+
+			int ld = diameter(n.left);
+			int rd = diameter(n.right);
+
+			return Math.max(lh + rh + 1, Math.max(ld, rd));
+		}
+	}
+
 	public static void main(String[] args) {
 		BinaryTree tree = new BinaryTree();
 		tree.root = new Node(1);
@@ -119,6 +133,8 @@ public class BinaryTree {
 
 		System.out.println("\nPOST-ORDER:");
 		tree.postOrder(tree.root);
+
+		System.out.println("\n\nTree Diameter: " + tree.diameter(tree.root));
 	}
 
 }
