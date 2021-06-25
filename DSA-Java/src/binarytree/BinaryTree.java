@@ -18,6 +18,39 @@ public class BinaryTree {
 		root = null;
 	}
 
+	void levelOrder(Node n) {
+		if (n == null) {
+			return;
+		} else {
+			int h = height(n);
+			for (int i = 0; i <= h; i++) {
+				printLevelOrder(n, i);
+			}
+		}
+	}
+
+	int height(Node n) {
+		if (n == null) {
+			return 0;
+		} else {
+			int lh = height(n.left);
+			int rh = height(n.right);
+			return (1 + Math.max(lh, rh));
+		}
+
+	}
+
+	void printLevelOrder(Node n, int h) {
+		if (n == null) {
+			return;
+		} else if (h == 1) {
+			System.out.print(n.data + " ");
+		} else if (h > 1) {
+			printLevelOrder(n.left, h - 1);
+			printLevelOrder(n.right, h - 1);
+		}
+	}
+
 	void inOrder(Node n) {
 		if (n == null) {
 			return;
@@ -56,6 +89,10 @@ public class BinaryTree {
 		tree.root.left.left = new Node(4);
 		tree.root.left.right = new Node(5);
 
+		System.out.println("BFS:");
+		tree.levelOrder(tree.root);
+		
+		System.out.println("\n\nDFSs");
 		System.out.println("IN-ORDER:");
 		tree.inOrder(tree.root);
 
