@@ -1,5 +1,8 @@
 package binarytree;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 class Node {
 	int data;
 	Node left, right;
@@ -22,9 +25,24 @@ public class BinaryTree {
 		if (n == null) {
 			return;
 		} else {
-			int h = height(n);
-			for (int i = 0; i <= h; i++) {
-				printLevelOrder(n, i);
+//			int h = height(n);
+//			for (int i = 0; i <= h; i++) {
+//				printLevelOrder(n, i);
+//			}
+
+			Queue<Node> q = new LinkedList<>();
+			q.add(n);
+
+			while (!q.isEmpty()) {
+				Node temp = q.poll();
+
+				System.out.print(temp.data + " ");
+
+				if (temp.left != null)
+					q.add(temp.left);
+
+				if (temp.right != null)
+					q.add(temp.right);
 			}
 		}
 	}
@@ -91,7 +109,7 @@ public class BinaryTree {
 
 		System.out.println("BFS:");
 		tree.levelOrder(tree.root);
-		
+
 		System.out.println("\n\nDFSs");
 		System.out.println("IN-ORDER:");
 		tree.inOrder(tree.root);
