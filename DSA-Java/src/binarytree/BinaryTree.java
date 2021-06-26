@@ -2,6 +2,7 @@ package binarytree;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 class Node {
 	int data;
@@ -73,9 +74,29 @@ public class BinaryTree {
 		if (n == null) {
 			return;
 		} else {
-			inOrder(n.left);
-			System.out.print(n.data + " ");
-			inOrder(n.right);
+			/**
+			 * Recursion Method.
+			 */
+//			inOrder(n.left);
+//			System.out.print(n.data + " ");
+//			inOrder(n.right);
+
+			/**
+			 * Without Recursion.
+			 */
+			Stack<Node> s = new Stack<>();
+			Node curr = n;
+
+			while (curr != null || s.size() > 0) {
+				while (curr != null) {
+					s.push(curr);
+					curr = curr.left;
+				}
+
+				curr = s.pop();
+				System.out.print(curr.data + " ");
+				curr = curr.right;
+			}
 		}
 	}
 
@@ -113,6 +134,54 @@ public class BinaryTree {
 		}
 	}
 
+	int width(Node n, int level) {
+		if (n == null) {
+			return 0;
+		} else if (level == 1) {
+			return 1;
+		} else if (level > 1) {
+			return width(n.left, level - 1) + width(n.right, level - 1);
+		} else {
+			return 0;
+		}
+	}
+
+	int maxWidth(Node n) {
+		int mw = 0;
+		int w;
+		int h = height(n);
+
+		for (int i = 1; i <= h; i++) {
+			w = width(n, i);
+			mw = w > mw ? w : mw;
+		}
+		return mw;
+	}
+
+	void printDistance(Node n, int d) {
+		if (n == null || d < 0) {
+			return;
+		} else if (d == 0) {
+			System.out.print(n.data + " ");
+		} else {
+			printDistance(n.left, d - 1);
+			printDistance(n.right, d - 1);
+		}
+	}
+
+	boolean printAncestors(Node n, int target) {
+		if (n == null) {
+			return false;
+		} else if (n.data == target) {
+			return true;
+		} else if (printAncestors(n.left, target) || printAncestors(n.right, target)) {
+			System.out.print(n.data + " ");
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public static void main(String[] args) {
 		BinaryTree tree = new BinaryTree();
 		tree.root = new Node(1);
@@ -134,7 +203,14 @@ public class BinaryTree {
 		System.out.println("\nPOST-ORDER:");
 		tree.postOrder(tree.root);
 
-		System.out.println("\n\nTree Diameter: " + tree.diameter(tree.root));
+		System.out.println("\n\nTree Diameter: " + tree.diameter(tree.root) + ", Height: " + tree.height(tree.root)
+				+ ", MaxWidth: " + tree.maxWidth(tree.root));
+
+		System.out.println("\nPrint at 2 Distance:");
+		tree.printDistance(tree.root, 2);
+
+		System.out.println("\n\nAncestors of 4: ");
+		tree.printAncestors(tree.root, 4);
 	}
 
 }
