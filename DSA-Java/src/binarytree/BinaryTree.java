@@ -1,9 +1,6 @@
 package binarytree;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 class Node {
 	int data;
@@ -205,16 +202,39 @@ public class BinaryTree {
 		}
 	}
 
-	int buildBST(int n) {
+	int numBST(int n) {
 		int[] dp = new int[n + 1];
 		dp[0] = dp[1] = 1;
-		
+
 		for (int i = 2; i <= n; i++) {
 			for (int j = 1; j <= i; j++) {
 				dp[i] += dp[i - j] * dp[j - 1];
 			}
 		}
 		return dp[n];
+	}
+
+	List<Node> constructTree(int start, int end) {
+		List<Node> result = new ArrayList<>();
+
+		if (start > end) {
+			result.add(null);
+			return result;
+		}
+
+		for (int i = start; i <= end; i++) {
+			List<Node> leftSubTrees = constructTree(start, i - 1);
+			List<Node> rightSubTrees = constructTree(i + 1, end);
+			for (Node leftSub : leftSubTrees) {
+				for (Node rightSub : rightSubTrees) {
+					Node n = new Node(i);
+					n.left = leftSub;
+					n.right = rightSub;
+					result.add(n);
+				}
+			}
+		}
+		return result;
 	}
 
 	public static void main(String[] args) {
@@ -253,7 +273,9 @@ public class BinaryTree {
 
 		System.out.println("\n\nT2 is sub of T1? " + tree.isSubTree(tree.root, tree.root1));
 
-		System.out.println("\n\nNum of BST of 3: " + tree.buildBST(3));
+		System.out.println("\n\nNum of BST of 3: " + tree.numBST(3));
+
+		System.out.println("\n\nConstruct BST from 1 to 3:" + tree.constructTree(1, 3));
 	}
 
 }
