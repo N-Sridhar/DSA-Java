@@ -1,5 +1,6 @@
 package binarytree;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -16,7 +17,7 @@ class Node {
 
 public class BinaryTree {
 
-	Node root;
+	Node root, root1;
 
 	BinaryTree() {
 		root = null;
@@ -182,6 +183,40 @@ public class BinaryTree {
 		}
 	}
 
+	boolean isSubTree(Node main, Node sub) {
+		if (sub == null) {
+			return true;
+		} else if (main == null) {
+			return false;
+		} else if (areIdentical(main, sub)) {
+			return true;
+		} else {
+			return isSubTree(main.left, sub) || isSubTree(main.right, sub);
+		}
+	}
+
+	boolean areIdentical(Node main, Node sub) {
+		if (main == null && sub == null) {
+			return true;
+		} else if (main == null || sub == null) {
+			return false;
+		} else {
+			return main.data == sub.data && areIdentical(main.left, sub.left) && areIdentical(main.right, sub.right);
+		}
+	}
+
+	int buildBST(int n) {
+		int[] dp = new int[n + 1];
+		dp[0] = dp[1] = 1;
+		
+		for (int i = 2; i <= n; i++) {
+			for (int j = 1; j <= i; j++) {
+				dp[i] += dp[i - j] * dp[j - 1];
+			}
+		}
+		return dp[n];
+	}
+
 	public static void main(String[] args) {
 		BinaryTree tree = new BinaryTree();
 		tree.root = new Node(1);
@@ -189,6 +224,10 @@ public class BinaryTree {
 		tree.root.right = new Node(3);
 		tree.root.left.left = new Node(4);
 		tree.root.left.right = new Node(5);
+
+		tree.root1 = new Node(2);
+		tree.root1.left = new Node(4);
+		tree.root1.right = new Node(5);
 
 		System.out.println("BFS:");
 		tree.levelOrder(tree.root);
@@ -211,6 +250,10 @@ public class BinaryTree {
 
 		System.out.println("\n\nAncestors of 4: ");
 		tree.printAncestors(tree.root, 4);
+
+		System.out.println("\n\nT2 is sub of T1? " + tree.isSubTree(tree.root, tree.root1));
+
+		System.out.println("\n\nNum of BST of 3: " + tree.buildBST(3));
 	}
 
 }
