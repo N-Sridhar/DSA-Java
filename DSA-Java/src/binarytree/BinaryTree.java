@@ -2,25 +2,18 @@ package binarytree;
 
 import java.util.*;
 
-class Node {
-	int data;
-	Node left, right;
-
-	public Node(int data) {
-		this.data = data;
-		left = right = null;
-	}
-}
+import basedefine.SinglyLinkedNode;
+import basedefine.TreeNode;
 
 public class BinaryTree {
 
-	Node root, root1;
+	TreeNode root, root1;
 
 	BinaryTree() {
 		root = null;
 	}
 
-	void levelOrder(Node n) {
+	void levelOrder(TreeNode n) {
 		if (n == null) {
 			return;
 		} else {
@@ -29,11 +22,11 @@ public class BinaryTree {
 //				printLevelOrder(n, i);
 //			}
 
-			Queue<Node> q = new LinkedList<>();
+			Queue<TreeNode> q = new LinkedList<>();
 			q.add(n);
 
 			while (!q.isEmpty()) {
-				Node temp = q.poll();
+				TreeNode temp = q.poll();
 
 				System.out.print(temp.data + " ");
 
@@ -46,7 +39,7 @@ public class BinaryTree {
 		}
 	}
 
-	int height(Node n) {
+	int height(TreeNode n) {
 		if (n == null) {
 			return 0;
 		} else {
@@ -57,7 +50,7 @@ public class BinaryTree {
 
 	}
 
-	void printLevelOrder(Node n, int h) {
+	void printLevelOrder(TreeNode n, int h) {
 		if (n == null) {
 			return;
 		} else if (h == 1) {
@@ -68,7 +61,7 @@ public class BinaryTree {
 		}
 	}
 
-	void inOrder(Node n) {
+	void inOrder(TreeNode n) {
 		if (n == null) {
 			return;
 		} else {
@@ -82,8 +75,8 @@ public class BinaryTree {
 			/**
 			 * Without Recursion.
 			 */
-			Stack<Node> s = new Stack<>();
-			Node curr = n;
+			Stack<TreeNode> s = new Stack<>();
+			TreeNode curr = n;
 
 			while (curr != null || s.size() > 0) {
 				while (curr != null) {
@@ -98,7 +91,7 @@ public class BinaryTree {
 		}
 	}
 
-	void preOrder(Node n) {
+	void preOrder(TreeNode n) {
 		if (n == null) {
 			return;
 		} else {
@@ -108,7 +101,7 @@ public class BinaryTree {
 		}
 	}
 
-	void postOrder(Node n) {
+	void postOrder(TreeNode n) {
 		if (n == null) {
 			return;
 		} else {
@@ -118,7 +111,7 @@ public class BinaryTree {
 		}
 	}
 
-	int diameter(Node n) {
+	int diameter(TreeNode n) {
 		if (n == null) {
 			return 0;
 		} else {
@@ -132,7 +125,7 @@ public class BinaryTree {
 		}
 	}
 
-	int width(Node n, int level) {
+	int width(TreeNode n, int level) {
 		if (n == null) {
 			return 0;
 		} else if (level == 1) {
@@ -144,7 +137,7 @@ public class BinaryTree {
 		}
 	}
 
-	int maxWidth(Node n) {
+	int maxWidth(TreeNode n) {
 		int mw = 0;
 		int w;
 		int h = height(n);
@@ -156,7 +149,7 @@ public class BinaryTree {
 		return mw;
 	}
 
-	void printDistance(Node n, int d) {
+	void printDistance(TreeNode n, int d) {
 		if (n == null || d < 0) {
 			return;
 		} else if (d == 0) {
@@ -167,7 +160,7 @@ public class BinaryTree {
 		}
 	}
 
-	boolean printAncestors(Node n, int target) {
+	boolean printAncestors(TreeNode n, int target) {
 		if (n == null) {
 			return false;
 		} else if (n.data == target) {
@@ -180,7 +173,7 @@ public class BinaryTree {
 		}
 	}
 
-	boolean isSubTree(Node main, Node sub) {
+	boolean isSubTree(TreeNode main, TreeNode sub) {
 		if (sub == null) {
 			return true;
 		} else if (main == null) {
@@ -192,7 +185,7 @@ public class BinaryTree {
 		}
 	}
 
-	boolean areIdentical(Node main, Node sub) {
+	boolean areIdentical(TreeNode main, TreeNode sub) {
 		if (main == null && sub == null) {
 			return true;
 		} else if (main == null || sub == null) {
@@ -214,8 +207,8 @@ public class BinaryTree {
 		return dp[n];
 	}
 
-	List<Node> constructTree(int start, int end) {
-		List<Node> result = new ArrayList<>();
+	List<TreeNode> constructTree(int start, int end) {
+		List<TreeNode> result = new ArrayList<>();
 
 		if (start > end) {
 			result.add(null);
@@ -223,11 +216,11 @@ public class BinaryTree {
 		}
 
 		for (int i = start; i <= end; i++) {
-			List<Node> leftSubTrees = constructTree(start, i - 1);
-			List<Node> rightSubTrees = constructTree(i + 1, end);
-			for (Node leftSub : leftSubTrees) {
-				for (Node rightSub : rightSubTrees) {
-					Node n = new Node(i);
+			List<TreeNode> leftSubTrees = constructTree(start, i - 1);
+			List<TreeNode> rightSubTrees = constructTree(i + 1, end);
+			for (TreeNode leftSub : leftSubTrees) {
+				for (TreeNode rightSub : rightSubTrees) {
+					TreeNode n = new TreeNode(i);
 					n.left = leftSub;
 					n.right = rightSub;
 					result.add(n);
@@ -237,45 +230,90 @@ public class BinaryTree {
 		return result;
 	}
 
+	TreeNode ArrayToBST(int[] arr) {
+		return ConstructArrayToBST(arr, 0, arr.length - 1);
+	}
+
+	TreeNode ConstructArrayToBST(int[] arr, int start, int end) {
+		if (start > end) {
+			return null;
+		} else {
+			int mid = start + end >> 1;
+			TreeNode tree = new TreeNode(arr[mid]);
+			tree.left = ConstructArrayToBST(arr, start, mid - 1);
+			tree.right = ConstructArrayToBST(arr, mid + 1, end);
+			return tree;
+		}
+	}
+
+	SinglyLinkedNode curr;
+
+	TreeNode LinkedListToBST(SinglyLinkedNode head) {
+		int count = 0;
+		curr = head;
+		while (curr != null) {
+			count++;
+			curr = curr.next;
+		}
+		curr = head;
+		return ConstructListToBST(1, count);
+	}
+
+	TreeNode ConstructListToBST(int start, int end) {
+		if (start > end) {
+			return null;
+		} else {
+			int mid = start + end >> 1;
+			TreeNode tree = new TreeNode();
+			tree.left = ConstructListToBST(start, mid - 1);
+			tree.data = curr.data;
+			curr = curr.next;
+			tree.right = ConstructListToBST(mid + 1, end);
+			return tree;
+		}
+	}
+
 	public static void main(String[] args) {
 		BinaryTree tree = new BinaryTree();
-		tree.root = new Node(1);
-		tree.root.left = new Node(2);
-		tree.root.right = new Node(3);
-		tree.root.left.left = new Node(4);
-		tree.root.left.right = new Node(5);
+//		tree.root = new TreeNode(1);
+//		tree.root.left = new TreeNode(2);
+//		tree.root.right = new TreeNode(3);
+//		tree.root.left.left = new TreeNode(4);
+//		tree.root.left.right = new TreeNode(5);
+//
+//		tree.root1 = new TreeNode(2);
+//		tree.root1.left = new TreeNode(4);
+//		tree.root1.right = new TreeNode(5);
+//
+//		System.out.println("BFS:");
+//		tree.levelOrder(tree.root);
+//
+//		System.out.println("\n\nDFSs");
+//		System.out.println("IN-ORDER:");
+//		tree.inOrder(tree.root);
+//
+//		System.out.println("\nPRE-ORDER:");
+//		tree.preOrder(tree.root);
+//
+//		System.out.println("\nPOST-ORDER:");
+//		tree.postOrder(tree.root);
+//
+//		System.out.println("\n\nTree Diameter: " + tree.diameter(tree.root) + ", Height: " + tree.height(tree.root)
+//				+ ", MaxWidth: " + tree.maxWidth(tree.root));
+//
+//		System.out.println("\nPrint at 2 Distance:");
+//		tree.printDistance(tree.root, 2);
+//
+//		System.out.println("\n\nAncestors of 4: ");
+//		tree.printAncestors(tree.root, 4);
+//
+//		System.out.println("\n\nT2 is sub of T1? " + tree.isSubTree(tree.root, tree.root1));
+//
+//		System.out.println("\n\nNum of BST of 3: " + tree.numBST(3));
+//
+//		System.out.println("\n\nConstruct BST from 1 to 3:" + tree.constructTree(1, 3));
 
-		tree.root1 = new Node(2);
-		tree.root1.left = new Node(4);
-		tree.root1.right = new Node(5);
-
-		System.out.println("BFS:");
-		tree.levelOrder(tree.root);
-
-		System.out.println("\n\nDFSs");
-		System.out.println("IN-ORDER:");
-		tree.inOrder(tree.root);
-
-		System.out.println("\nPRE-ORDER:");
-		tree.preOrder(tree.root);
-
-		System.out.println("\nPOST-ORDER:");
-		tree.postOrder(tree.root);
-
-		System.out.println("\n\nTree Diameter: " + tree.diameter(tree.root) + ", Height: " + tree.height(tree.root)
-				+ ", MaxWidth: " + tree.maxWidth(tree.root));
-
-		System.out.println("\nPrint at 2 Distance:");
-		tree.printDistance(tree.root, 2);
-
-		System.out.println("\n\nAncestors of 4: ");
-		tree.printAncestors(tree.root, 4);
-
-		System.out.println("\n\nT2 is sub of T1? " + tree.isSubTree(tree.root, tree.root1));
-
-		System.out.println("\n\nNum of BST of 3: " + tree.numBST(3));
-
-		System.out.println("\n\nConstruct BST from 1 to 3:" + tree.constructTree(1, 3));
+		tree.preOrder(tree.ArrayToBST(new int[] { -2, -1, 0, 1, 2, 3 }));
 	}
 
 }
