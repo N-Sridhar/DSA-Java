@@ -138,9 +138,7 @@ public class BinaryTree {
 	}
 
 	int maxWidth(TreeNode n) {
-		int mw = 0;
-		int w;
-		int h = height(n);
+		int mw = 0, w, h = height(n);
 
 		for (int i = 1; i <= h; i++) {
 			w = width(n, i);
@@ -275,11 +273,11 @@ public class BinaryTree {
 
 	public static void main(String[] args) {
 		BinaryTree tree = new BinaryTree();
-//		tree.root = new TreeNode(1);
-//		tree.root.left = new TreeNode(2);
-//		tree.root.right = new TreeNode(3);
-//		tree.root.left.left = new TreeNode(4);
-//		tree.root.left.right = new TreeNode(5);
+		tree.root = new TreeNode(1);
+		tree.root.left = new TreeNode(2);
+		tree.root.right = new TreeNode(3);
+		tree.root.left.left = new TreeNode(4);
+		tree.root.left.right = new TreeNode(5);
 //
 //		tree.root1 = new TreeNode(2);
 //		tree.root1.left = new TreeNode(4);
@@ -313,7 +311,7 @@ public class BinaryTree {
 //
 //		System.out.println("\n\nConstruct BST from 1 to 3:" + tree.constructTree(1, 3));
 
-		tree.preOrder(tree.ArrayToBST(new int[] { -2, -1, 0, 1, 2, 3 }));
+//		tree.preOrder(tree.ArrayToBST(new int[] { -2, -1, 0, 1, 2, 3 }));
 	}
 
 }
