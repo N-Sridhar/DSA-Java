@@ -7,9 +7,11 @@ public class Sorting {
 
 //		insertionSort(arr);
 
+//		selectionSort(arr);
+
 //		quickSort(arr, 0, arr.length - 1);
 
-		mergeSort(arr, 0, arr.length - 1);
+//		mergeSort(arr, 0, arr.length - 1);
 
 		arrayPrinter(arr);
 	}
@@ -23,6 +25,21 @@ public class Sorting {
 				prev -= 1;
 			}
 			arr[prev + 1] = key;
+		}
+	}
+
+	static void selectionSort(int[] arr) {
+		for (int i = 0; i < arr.length; i++) {
+			int pos = i;
+			for (int j = i + 1; j < arr.length; j++) {
+				if (arr[j] < arr[pos])
+					pos = j;
+			}
+			if (pos != i) {
+				int temp = arr[pos];
+				arr[pos] = arr[i];
+				arr[i] = temp;
+			}
 		}
 	}
 
