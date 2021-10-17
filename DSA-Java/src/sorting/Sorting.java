@@ -3,9 +3,9 @@ package sorting;
 public class Sorting {
 
 	public static void main(String[] args) {
-		int[] arr = { 5, 2, 1, 3, 4 };
+		int[] arr = { 5, 2, 1, 6, 3, 4 };
 
-		bubbleSort(arr);
+//		bubbleSort(arr);
 
 //		insertionSort(arr);
 
@@ -15,9 +15,18 @@ public class Sorting {
 
 //		mergeSort(arr, 0, arr.length - 1);
 
+		heapSort(arr);
+
 		arrayPrinter(arr);
 	}
 
+	/**
+	 * @BubbleSort: Compare two adjacent elements until all sorted.
+	 * 
+	 * @time O(N^2) Time - N is the length of the array
+	 * @space O(1) Space
+	 * 
+	 */
 	static void bubbleSort(int[] arr) {
 		int n = arr.length;
 		for (int i = 0; i < n; i++) {
@@ -31,6 +40,14 @@ public class Sorting {
 		}
 	}
 
+	/**
+	 * @InsertionSort: Compare element with its preceding elements & move it to its
+	 *                 right position.
+	 * 
+	 * @time O(N^2) Time - N is the length of the array
+	 * @space O(1) Space
+	 * 
+	 */
 	static void insertionSort(int[] arr) {
 		for (int i = 1; i < arr.length; i++) {
 			int key = arr[i];
@@ -43,6 +60,13 @@ public class Sorting {
 		}
 	}
 
+	/**
+	 * @SelectionSort: find the lowest element & bring it to its position.
+	 * 
+	 * @time O(N^2) Time - N is the length of the array
+	 * @space O(1) Space
+	 * 
+	 */
 	static void selectionSort(int[] arr) {
 		for (int i = 0; i < arr.length; i++) {
 			int pos = i;
@@ -58,6 +82,14 @@ public class Sorting {
 		}
 	}
 
+	/**
+	 * @QuickSort: find the pivot element & move its lowest to left & highest to
+	 *             right.
+	 * 
+	 * @time O(N*logN) Time - N is the length of the array
+	 * @space O(1) Space
+	 * 
+	 */
 	static void quickSort(int[] arr, int low, int high) {
 		if (low < high) {
 			int p = partitioning(arr, low, high);
@@ -67,9 +99,13 @@ public class Sorting {
 		}
 	}
 
+	/**
+	 * @QuickSort partitioning function.
+	 * 
+	 */
 	static int partitioning(int[] arr, int low, int high) {
 		int pivot = arr[high];
-		int pos = -1;
+		int pos = low - 1;
 
 		for (int curr = low; curr < high; curr++) {
 			if (arr[curr] <= pivot) {
@@ -88,6 +124,14 @@ public class Sorting {
 		return pos + 1;
 	}
 
+	/**
+	 * @MergeSort: Divide the array into two until two elements left & while merging
+	 *             compare & place.
+	 * 
+	 * @time O(N*logN) Time - N is the length of the array
+	 * @space O(N) Space - N is the length of the array
+	 * 
+	 */
 	static void mergeSort(int[] arr, int low, int high) {
 		if (low < high) {
 
@@ -101,6 +145,10 @@ public class Sorting {
 		}
 	}
 
+	/**
+	 * @QuickSort merging function.
+	 * 
+	 */
 	static void merger(int arr[], int low, int mid, int high) {
 		int n1 = mid - low + 1;
 		int n2 = high - mid;
@@ -132,6 +180,53 @@ public class Sorting {
 
 		while (j < n2) {
 			arr[k++] = A2[j++];
+		}
+	}
+
+	/**
+	 * @HeapSort: Create the heap & remove the largest element from heap & insert in
+	 *            sorted array.
+	 * 
+	 * @time O(N*logN) Time - N is the length of the array
+	 * @space O(1) Space - N is the length of the array
+	 * 
+	 */
+	static void heapSort(int[] arr) {
+		int len = arr.length;
+
+		for (int i = len / 2 - 1; i >= 0; i--)
+			heapify(arr, len, i);
+
+		for (int i = len - 1; i >= 0; i--) {
+			int temp = arr[0];
+			arr[0] = arr[i];
+			arr[i] = temp;
+
+			heapify(arr, i, 0);
+		}
+	}
+
+	/**
+	 * @HeapSort heapify function.
+	 * 
+	 */
+	static void heapify(int[] arr, int len, int root) {
+		int largest = root;
+		int left = 2 * root + 1;
+		int right = 2 * root + 2;
+
+		if (left < len && arr[left] > arr[largest])
+			largest = left;
+
+		if (right < len && arr[right] > arr[largest])
+			largest = right;
+
+		if (largest != root) {
+			int temp = arr[root];
+			arr[root] = arr[largest];
+			arr[largest] = temp;
+
+			heapify(arr, len, largest);
 		}
 	}
 
